@@ -2,8 +2,25 @@ const express=require("express");
 const app=express();
 const port=8000;
 
-//use express router
-app.use("/", require("./routes/index"));                  //middleware 
+//middleware to define the layout for the application
+const expresslayouts=require("express-ejs-layouts");
+
+//to connect with db
+const db=require("./config/mongoose");
+
+app.use(expresslayouts);           
+
+
+
+//middleware to extract styles and scripts from subpage into the layouts
+app.set("layout extractStyles",true);
+app.set("layout extractScripts",true);
+
+//middleware to define the asset folder
+app.use(express.static("./assets"));       
+                     
+// middleware use express router
+app.use("/", require("./routes/index"));                  
 
 // set up the view engine
 app.set("view engine","ejs");
