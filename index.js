@@ -9,6 +9,15 @@ const expresslayouts = require("express-ejs-layouts");
 //to connect with db
 const db = require("./config/mongoose");
 
+//used for session cookie
+//  to store user id into session cookie
+const session = require("express-session");
+
+//for authentication using passport
+const passport = require("passport");
+const passportLocal = require("./config/passport-local-strategy");
+// will store express session in mongo store require express session which we created
+// const MongoStore = require("connect-mongo")(session);
 //to read form posted data
 app.use(express.urlencoded());
 
@@ -24,12 +33,43 @@ app.set("layout extractScripts", true);
 //middleware to define the asset folder
 app.use(express.static("./assets"));
 
-// middleware use express router
-app.use("/", require("./routes/index"));
-
 // set up the view engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
+//mongo store is used to store the cookie in the db
+//after view middleware which takes session cookie and encrypt it
+
+app.use(
+  session({
+    name: "codeial", //name of cookie
+    //todo change the secret before deployment in prod mode
+    secret: "blah", //when encryption happens the key to encode and decode
+    saveUninitialized: false, //
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 100, //number of minutes  ( in milliseconds)
+    },
+    // store: new MongoStore(
+    //   {
+    //     mongooseConnection: db, //d b   which we imported from mongoose setup file
+    //     autoRemove: "disabled",
+    //   },
+    //   function (err) {
+    //     //call back fxn if there is an error
+    //     console.log(err || "connect mongodb setup ok");
+    //   }
+    // ),
+  })
+);
+//telling app to use passport
+app.use(passport.initialize());
+app.use(passport.session());
+//when app initialize passport gets initialize and this fxn is called, check whether session cookie is present and user will be set in locals for each request as it is middleware
+//after passport
+app.use(passport.setAuthenticatedUser);
+
+//after passport is initialized middleware use express router
+app.use("/", require("./routes/index"));
 
 app.listen(port, function (err) {
   if (err) {
