@@ -11,17 +11,10 @@ module.exports.posts = function (req, res) {
 };
 
 module.exports.signUP = function (req, res) {
-  //  if user is authenticated no need to sign in or up directly take to profile
-  if (req.isAuthenticated()) {
-    return res.redirect("/users/profile");
-  }
   return res.render("user_sign_Up", { title: "signUP" });
 };
 
 module.exports.signIn = function (req, res) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/users/profile");
-  }
   return res.render("user_sign_In", { title: "signIn" });
 };
 //to create new users

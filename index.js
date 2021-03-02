@@ -17,7 +17,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("./config/passport-local-strategy");
 // will store express session in mongo store require express session which we created
-// const MongoStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo").default;
 //to read form posted data
 app.use(express.urlencoded());
 
@@ -49,16 +49,15 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 100, //number of minutes  ( in milliseconds)
     },
-    // store: new MongoStore(
-    //   {
-    //     mongooseConnection: db, //d b   which we imported from mongoose setup file
-    //     autoRemove: "disabled",
-    //   },
-    //   function (err) {
-    //     //call back fxn if there is an error
-    //     console.log(err || "connect mongodb setup ok");
-    //   }
-    // ),
+    store: MongoStore.create(
+      {
+        mongoUrl: "mongodb://localhost/codeial_db", //provide the link of the db
+      },
+      function (err) {
+        //call back fxn if there is an error
+        console.log(err || "connect mongodb setup ok");
+      }
+    ),
   })
 );
 //telling app to use passport

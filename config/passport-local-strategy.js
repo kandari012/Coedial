@@ -66,7 +66,14 @@ passport.setAuthenticatedUser = function (req, res, next) {
     //req.user contains the current signed in user from the session cookie and we rae just sending this to the locals of views
     res.locals.user = req.user;
   }
-  next();
+  return next();
+};
+//if user is authenticated no need to sign in or up directly take to profile
+passport.isUserLogedIn = function (req, res, next) {
+  if (!req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect("/users/profile");
 };
 
 module.exports = passport;
