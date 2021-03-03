@@ -1,0 +1,23 @@
+header {
+  background-color: grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  p {
+    font-size: 30px;
+    font-weight: bolder;
+  }
+  ul {
+    display: flex;
+    li {
+      list-style: none;
+      font-size: 30px;
+      font-weight: normal;
+      margin-right: 5px;
+      a {
+        color: white;
+      }
+    }
+  }
+}

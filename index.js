@@ -19,6 +19,18 @@ const passportLocal = require("./config/passport-local-strategy");
 // will store express session in mongo store require express session which we created
 const MongoStore = require("connect-mongo").default;
 //to read form posted data
+//middleware to convert our scss into css
+const sassMiddleware = require("node-sass-middleware");
+
+app.use(
+  sassMiddleware({
+    src: "./assets/scss", //source file of scss
+    dest: "./assets/css", //dest where to put the css files converted
+    debug: true, // all the error and commands we see during compilation need to see if compilation fail etc
+    outputStyle: "extended", //multiple line style
+    prefix: "/css", //where the server should lookout for css files
+  })
+);
 app.use(express.urlencoded());
 
 //to parse cookie

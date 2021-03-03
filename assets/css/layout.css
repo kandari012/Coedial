@@ -1,5 +1,6 @@
 body {
   margin: 0px;
   /* text-align: center; */
-  background-color: aqua;
-}
+  background-color: lightgrey; }
+  body main {
+    height: 75%; }
