@@ -1,2 +1,21 @@
 <link rel="stylesheet" href="/css/home.css" />
-<h1>welcome to <%= title%></h1>
+<h1>Codeial <%= title%></h1>
+
+<% if(locals.user){%>
+<section>
+  <h4>Posts</h4>
+  <form action="/posts/create" method="POST">
+    <textarea name="content" cols="30" rows="3"></textarea>
+    <input type="submit" value="Post" />
+  </form>
+</section>
+<%}%>
+
+<div>
+  <% for(let i of posts){%>
+  <li>
+    <p><%=i.content%></p>
+    <p><%=i.user.name%></p>
+  </li>
+  <%}%>
+</div>
