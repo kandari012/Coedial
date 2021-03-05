@@ -14,11 +14,16 @@
 <div>
   <% for(let post of posts){%>
   <li>
+    <!-- check user exist and can only see delete if the user created the post is
+    loged in  -->
+    <%if(locals.user && post.user.id ==locals.user.id){%>
+    <small><a href="/posts/destroy/<%=post.id%>">Delete</a></small>
+    <%}%>
     <p><%=post.content%></p>
     <p><%=post.user.name%></p>
     <div>
       <% if(locals.user){%>
-      <form action="/comment/create" method="POST">
+      <form action="/comments/create" method="POST">
         <input
           type="text"
           name="content"
@@ -34,6 +39,12 @@
       <div>
         <ul id="post-comments-<%=post._id%>">
           <% for(let comment of post.comments){%>
+          <!-- //can only delete if user signed
+          in ,comment by user is signed in or post by user is signed in  -->
+          <%if(locals.user && (post.user.id ==locals.user.id || comment.post.id
+          ==locals.user.id)){%>
+          <small><a href="/comments/destroy/<%=comment.id%>">Delete</a></small>
+          <%}%>
           <p><%=comment.content%></p>
           <small><%=comment.user.name%></small>
           <%}%>
