@@ -1,4 +1,5 @@
 const post = require("../models/post");
+const User = require("../models/user");
 module.exports.home = function (req, res) {
   //populate the user for each post
   post
@@ -16,10 +17,16 @@ module.exports.home = function (req, res) {
       if (err) {
         console.log("erroe while fething post", err);
         return;
+        //i mute my mic
+        //can i drop post collection in dta
+        //hmm whats the error? ek sec
       }
-      return res.render("home", {
-        title: "Home",
-        posts: posts,
+      User.find({}, function (err, users) {
+        return res.render("home", {
+          title: "Home",
+          posts: posts,
+          all_users: users,
+        });
       });
     });
 };
