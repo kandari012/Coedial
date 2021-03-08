@@ -21,6 +21,10 @@ const MongoStore = require("connect-mongo").default;
 //to read form posted data
 //middleware to convert our scss into css
 const sassMiddleware = require("node-sass-middleware");
+// to use flash messages
+const flash = require("connect-flash");
+//use middleware to add flash message from req to response
+const customMware = require("./config/middleware");
 
 app.use(
   sassMiddleware({
@@ -78,6 +82,11 @@ app.use(passport.session());
 //when app initialize passport gets initialize and this fxn is called, check whether session cookie is present and user will be set in locals for each request as it is middleware
 //after passport
 app.use(passport.setAuthenticatedUser);
+
+//after sesion as it uses session cookies
+app.use(flash());
+//use custom mware to add flash message to res   after flash
+app.use(customMware.setFlash);
 
 //after passport is initialized middleware use express router
 app.use("/", require("./routes/index"));

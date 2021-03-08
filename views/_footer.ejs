@@ -1,7 +1,10 @@
 <footer>
   <div>@Rahulkandari.com All reights reserved</div>
+
   <div>
     <a href="/">Home</a>
+    <%if(locals.user){%>
     <a href="/users/profile/<%=locals.user.id%>">Profile</a>
+    <%}%>
   </div>
 </footer>

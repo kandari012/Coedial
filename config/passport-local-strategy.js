@@ -12,19 +12,21 @@ passport.use(
     {
       //to decide username field from schema which will bw unique
       usernameField: "email",
+      passReqToCallback: true,
     },
     //callback fxn
-    function (email, password, done) {
+    function (req, email, password, done) {
       //done inbuild passport fxn   takes 2 arg one err second some else
       //find a user and stablish the identity
       User.findOne({ email: email }, function (err, user) {
         if (err) {
-          console.log("error in finding user ------>passport");
+          req.flash("error", err);
+
           return done(err);
         }
 
         if (!user || user.password != password) {
-          console.log("Invalid User /Password");
+          req.flash("error", "Invalid User /Password");
           return done(null, false);
         }
         return done(null, user); //if user is found it will return the user to serializer

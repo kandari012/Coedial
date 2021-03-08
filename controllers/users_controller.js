@@ -12,10 +12,12 @@ module.exports.profile = function (req, res) {
 module.exports.update = function (req, res) {
   if (req.user.id == req.params.id) {
     User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
+      req.flash("success", "profile updated");
       return res.redirect("back");
     });
   } else {
-    return res.status(401).send("Unauthorized");
+    req.flash("error", "Not authorized to update profile");
+    return res.redirect("back");
   }
 };
 module.exports.posts = function (req, res) {
@@ -33,6 +35,7 @@ module.exports.signIn = function (req, res) {
 
 module.exports.create = function (req, res) {
   if (req.body.password != req.body.confirm_password) {
+    req.flash("error", "password not matched");
     return res.redirect("back");
   }
   User.findOne({ email: req.body.email }, function (err, user) {
@@ -46,21 +49,25 @@ module.exports.create = function (req, res) {
           console.log("error while finding the user");
           return;
         }
-        console.log("user created");
+        req.flash("success", "User Created");
+
         return res.redirect("/users/sign-in");
       });
     } else {
-      return res.redirect("back");
+      req.flash("error", "User already exist");
+
+      return res.redirect("/users/sign-in");
     }
   });
 };
 // user is already signed in so just need to redirect if authentication from passport is sucess then control come to this controller
 module.exports.createSession = function (req, res) {
+  req.flash("success", "logged in successfully"); //add flash message to req
   return res.redirect("/");
 };
 
 module.exports.destroySession = function (req, res) {
   req.logout(); //this fxn is given to req using passport.js   removing users session cookie
-
+  req.flash("success", "logged out successfully");
   return res.redirect("/");
 };
