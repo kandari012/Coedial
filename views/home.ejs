@@ -1,24 +1,25 @@
 <link rel="stylesheet" href="/css/home.css" />
 
 <div id="home-container">
-  <% if(locals.user){%>
   <section id="feeds-posts">
+    <% if(locals.user){%>
+
     <h4>Posts</h4>
-    <form action="/posts/create" method="POST">
+    <form action="/posts/create" method="POST" id="new-post-form">
       <textarea name="content" cols="30" rows="3" required></textarea>
       <input type="submit" value="Post" />
     </form>
 
     <%}%>
 
-    <div>
+    <div id="post-list-container">
       <ul>
         <!-- pass post to the partial as it not have access on that -->
         <% for(let post of posts){%> <%-include("_post",{post:post})-%> <%}%>
       </ul>
     </div>
   </section>
-
+  <div id="devider"></div>
   <section id="user-friends">
     <h4>Friends</h4>
     <% for(let user of all_users){%>
@@ -27,3 +28,4 @@
     <%}%>
   </section>
 </div>
+<script src="/js/home_post.js"></script>

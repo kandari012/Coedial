@@ -85,7 +85,7 @@ app.use(passport.setAuthenticatedUser);
 
 //after sesion as it uses session cookies
 app.use(flash());
-//use custom mware to add flash message to res   after flash
+//use custom mware to add flash message to res   after flash  will run for each request
 app.use(customMware.setFlash);
 
 //after passport is initialized middleware use express router

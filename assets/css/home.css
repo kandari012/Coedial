@@ -1,10 +1,16 @@
 #home-container {
-  display: flex; }
+  display: flex;
+  position: relative; }
   #home-container #feeds-posts {
     width: 70%;
-    padding: 5px;
-    border-right: 1px solid gray;
-    height: 100%; }
+    padding: 5px; }
+  #home-container #devider {
+    position: absolute;
+    width: 0%;
+    bottom: 5%;
+    height: 90%;
+    border: 3px dashed darkgray;
+    left: 70%; }
   #home-container #user-friends {
-    width: 30%;
+    width: 28%;
     padding: 5px; }

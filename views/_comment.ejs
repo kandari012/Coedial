@@ -1,9 +1,13 @@
-<li>
+<li id="comment-<%=comment._id%>">
   <!-- //can only delete if user signed
       in ,comment by user is signed in or post by user is signed in  -->
   <%if((locals.user)&& (post.user.id ==locals.user.id || comment.user.id
   ==locals.user.id)){%>
-  <small><a href="/comments/destroy/<%=comment.id%>">Delete</a></small>
+  <small
+    ><a class="delete-comment-button" href="/comments/destroy/<%=comment.id%>"
+      >Delete</a
+    ></small
+  >
   <%}%>
 
   <p><%=comment.content%></p>

@@ -15,6 +15,22 @@ module.exports.create = async function (req, res) {
       post.comments.push(comment); //add to post  will fetch the id and push it
       post.save(); //on each update save
 
+      let CommentWithUser = await Comment.findById(comment._id).populate(
+        "user"
+      ); //populate user to post
+      //type of ajax request is xml-http  (xhr) will send this data to ajax success
+      if (req.xhr) {
+        return res.status(200).json({
+          data: {
+            comment: comment,
+            post_id: req.body.post,
+            username: CommentWithUser.user.name,
+          },
+          //post which is created in db entry
+          message: "Comment Created",
+        });
+      }
+
       req.flash("success", "comment added ");
 
       res.redirect("back");
@@ -47,6 +63,14 @@ module.exports.destroy = async function (req, res) {
           postId,
           { $pull: { comments: req.params.id } }
         );
+      }
+
+      //type of ajax request is xml-http  (xhr) will send this data to ajax success
+      if (req.xhr) {
+        return res.status(200).json({
+          data: { comment_id: req.params.id }, // id of comment which need to be deleted
+          message: "Comment Deleted",
+        });
       }
       req.flash("success", "comment deleted");
       res.redirect("back");
