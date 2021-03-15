@@ -1,8 +1,15 @@
 <h1>welcome to user <%= title %></h1>
+
+<img src="<%=user.avatar%>" alt="<%=user.name%>" width="100px" />
+
 <!-- if user matches show the form -->
 <%if(user.id==profile_user.id){%>
-
-<form action="/users/update/<%=profile_user.id%>" method="POST">
+<!-- for uploading file -->
+<form
+  action="/users/update/<%=profile_user.id%>"
+  method="POST"
+  enctype="multipart/form-data"
+>
   <input
     type="text"
     name="name"
@@ -17,6 +24,7 @@
     required
     value="<%=profile_user.email%>"
   />
+  <input type="file" name="avatar" placeholder="Profile Picture" />
   <input type="submit" value="update" />
 </form>
 <!-- else show only the info -->

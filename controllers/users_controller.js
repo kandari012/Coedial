@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const path = require("path");
+const fs = require("fs");
 
 module.exports.profile = function (req, res) {
   User.findById(req.params.id, function (err, user) {
@@ -9,12 +11,42 @@ module.exports.profile = function (req, res) {
   });
 };
 
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
   if (req.user.id == req.params.id) {
-    User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
-      req.flash("success", "profile updated");
+    try {
+      let user = await User.findById(req.params.id); //not able to directly use fiels from req.body as it is multipart/form-data as body parser can't parse it
+      await User.uploadedAvatar(req, res, function (err) {
+        //multer used to acess body part of request
+        if (err) {
+          console.log(
+            "-------------------error in multer ---------------------",
+            err
+          );
+        }
+
+        user.name = req.body.name;
+        user.email = req.body.email;
+        let avatarPath = path.join(__dirname, "..", User.avatarPath);
+        if (req.file) {
+          //if user have avatar field then delete the previous vataer and add new avataer to the file
+          //if folder have more than one avatar then delete the previous avatar
+
+          if (fs.readdirSync(avatarPath).length > 1) {
+            if (user.avatar) {
+              fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+            }
+          }
+
+          // saving the path of the uploaded file in the avatar field of db
+          user.avatar = User.avatarPath + "/" + req.file.filename;
+        }
+        user.save();
+        return res.redirect("back");
+      });
+    } catch (err) {
+      req.flash("error", err);
       return res.redirect("back");
-    });
+    }
   } else {
     req.flash("error", "Not authorized to update profile");
     return res.redirect("back");

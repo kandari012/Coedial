@@ -25,6 +25,8 @@ const sassMiddleware = require("node-sass-middleware");
 const flash = require("connect-flash");
 //use middleware to add flash message from req to response
 const customMware = require("./config/middleware");
+//make the avatar upload path available to the browser
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 app.use(
   sassMiddleware({
