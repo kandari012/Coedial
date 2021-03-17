@@ -17,6 +17,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("./config/passport-local-strategy");
 const passportJWT = require("./config/passport-jwt-strategy");
+const passportGoogle=require("./config/passport-google-oauth2-strategy");
 // will store express session in mongo store require express session which we created
 const MongoStore = require("connect-mongo").default;
 //to read form posted data

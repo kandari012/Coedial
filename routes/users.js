@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 const userController = require("../controllers/users_controller");
+const User = require("../models/user");
 console.log("routes exported");
 
 //make profile page only accessible if the user is signed in
@@ -28,5 +29,18 @@ router.post(
   }),
   userController.createSession
 );
-
+//when click on sigin with google takes to the pop up
+//scope what information neede from google on user signup/signin
+//path given by passport
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+); //url at whic we will receive the data
+//google fetch data nad pass to the server
+//signout only from coedial not from google
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/users/sign-in" }),
+  userController.createSession
+);
 module.exports = router;
