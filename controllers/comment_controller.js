@@ -1,6 +1,8 @@
 const Comment = require("../models/comment");
 const Posts = require("../models/post");
 const commnetMailer = require("../mailers/comments_mailer"); //to use mailer
+const queue = require("../config/kue");
+const commnetEmailWorker = require("../workers/comment_email_worker");
 module.exports.create = async function (req, res) {
   try {
     let post = await Posts.findById(req.body.post);
@@ -22,7 +24,17 @@ module.exports.create = async function (req, res) {
       //can also used as
       //commnet=await comment.populate("user","name email").execPopulate();
 
-      commnetMailer.newComment(CommentWithUser); // to send mail on each comment created
+      // commnetMailer.newComment(CommentWithUser); // to send mail on each comment created
+      
+      // create a new queue with name emails if alraedy present then add the job inside that
+      let job = queue.create("emails", CommentWithUser).save(function (err) {
+        if (err) {
+          console.log("error in creating a queue", err);
+          return;
+        }
+        console.log("job enqueued", job.id);
+      });
+
       //type of ajax request is xml-http  (xhr) will send this data to ajax success
       if (req.xhr) {
         return res.status(200).json({
