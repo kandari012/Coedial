@@ -36,8 +36,9 @@ router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 ); //url at whic we will receive the data
-//google fetch data nad pass to the server
+//google fetch data and pass to the server
 //signout only from coedial not from google
+//will work when we selec a account
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/users/sign-in" }),
