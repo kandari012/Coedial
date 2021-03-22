@@ -8,8 +8,17 @@
       >Delete</a
     ></small
   >
-  <%}%>
 
+  <%}%> <%if(locals.user){%>
+  <small
+    ><a class="like" href="likes/toggle/?id=<%=comment._id%>&type=Comment"
+      >Like <%=comment.likes.length%></a
+    ></small
+  >
+  <%}else{%>
+
+  <small>Like <%=comment.likes.length%></small>
+  <%}%>
   <p><%=comment.content%></p>
   <small><%=comment.user.name%></small>
 </li>

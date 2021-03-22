@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const Likes = require("../models/like");
 //create post
 module.exports.create = async function (req, res) {
   try {
@@ -32,6 +33,13 @@ module.exports.destroy = async function (req, res) {
     //.id means converting the object id into string
     if (post.user == req.user.id) {
       post.remove();
+      //delete all likes associated to post
+      await Likes.deleteMany({ Likeable: req.params.id });
+
+      //delete all commnets and likes associated to those posts
+      await Likes.deleteMany({ Likeable: { $in: post.comments } });
+
+      //delete all comments associted to post
       await Comment.deleteMany({ post: req.params.id });
 
       //type of ajax request is xml-http  (xhr) will send this data to ajax success

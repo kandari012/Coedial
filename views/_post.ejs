@@ -7,6 +7,15 @@
       >Delete</a
     ></small
   >
+
+  <%}%> <%if(locals.user){%>
+  <small>
+    <a class="like" href="likes/toggle/?id=<%=post._id%>&type=Post"
+      >Like <%=post.likes.length%>
+    </a>
+  </small>
+  <%}else{%>
+  <small> Like <%=post.likes.length%> </small>
   <%}%>
   <p><%=post.content%></p>
   <p><%=post.user.name%></p>

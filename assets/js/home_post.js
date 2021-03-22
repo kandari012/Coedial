@@ -24,6 +24,7 @@
           let newPost = newPostDom(data.data); //call fxn to craete post
           $("#post-list-container>ul").prepend(newPost); //add post to dom
           deletePost($(" .delete-post-button", newPost)); // j query syntax delete link inside new post ,find class inside new post apply ajax on the delete button of new created post
+          Like($(" .like", newPost)); // apply on like
           createComment($(" .new-comment-form", newPost));
           notyNotificationSuccess("Post Created");
         },
@@ -49,6 +50,11 @@
     
     <small><a class="delete-post-button" href="/posts/destroy/${data.post._id}">Delete</a></small>
    
+    <small>
+    <a class="like" href="likes/toggle/?id=${data.post._id}&type=Post"
+      >like ${data.post.likes.length}</a
+    ></small
+  >
     <p>${data.post.content}</p>
         <p>${data.username}</p>
     <div>
@@ -117,6 +123,7 @@
           let x = `post-comments-${data.data.post_id}`; //id of ul within perticular post
           $(`#${x}`).prepend(newComment);
           deleteComment($(" .delete-comment-button", newComment));
+          Like($(" .like", newComment));
           notyNotificationSuccess("Comment Created");
         },
         error: function (error) {
@@ -134,6 +141,11 @@
 
 <small><a class="delete-comment-button" href="/comments/destroy/${data.comment._id}">Delete</a></small>
 
+<small
+    ><a class="like" href="likes/toggle/?id=${data.comment._id}&type=Comment"
+      >like ${data.comment.likes.length}</a
+    ></small
+  >
 <p>${data.comment.content}</p>
 <small>${data.username}</small>
 </li>`);
@@ -164,7 +176,7 @@
   };
 
   //apply AJAX action on all comment and  post actions
-  let AjaxCallToCommentAndPost = function () {
+  let AjaxCallToCommentAndPostAndLike = function () {
     createPost(); //call craete post
 
     // apply delete post to all posts craeted before new post
@@ -182,6 +194,12 @@
     for (let i of deleleAllComment) {
       console.log("data to delete comment", $(i));
       deleteComment($(i));
+    }
+    // apply to all like buttons
+    let likable = $(".like");
+    for (let i of likable) {
+      console.log("data to like", $(i));
+      Like($(i));
     }
   };
 
@@ -205,5 +223,39 @@
     }).show();
   };
 
-  AjaxCallToCommentAndPost();
+  //likes code
+
+  //method on like
+  let Like = function (like) {
+    //deleteLink link of delete for each post a tag from _post.ejs
+    console.log("ajax called to like", like);
+    $(like).click(function (event) {
+      event.preventDefault(); //remove natural behaviour
+
+      $.ajax({
+        type: "get",
+        url: $(like).prop("href"), //value of href from a tag   also contain post id
+        success: function (data) {
+          notyNotificationSuccess("liked");
+          //find post or commnet id
+          let x = $(`#comment-${data.data.likeable._id}`);
+          let y = $(`#post-${data.data.likeable._id}`);
+
+          $(" .like", x).html(`Like ${data.data.likeable.likes.length}`);
+          //change text of first like link inside commnet
+          $(" .like", y)
+            .first()
+            .html(`Like ${data.data.likeable.likes.length}`);
+          console.log($(" .like", x));
+          console.log($(" .like", y));
+        },
+        error: function (error) {
+          notyNotificationError(error);
+          console.log("error.responseText");
+        },
+      });
+    });
+  };
+
+  AjaxCallToCommentAndPostAndLike();
 }

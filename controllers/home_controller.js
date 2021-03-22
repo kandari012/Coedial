@@ -20,7 +20,7 @@ module.exports.home = async function (req, res) {
       });
 
     let users = await User.find({}); //awaits will execute this
-
+    // console.log(posts.likes);
     return res.render("home", {
       //then this
       title: "Home",

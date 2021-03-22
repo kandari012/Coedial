@@ -1,4 +1,5 @@
 const Comment = require("../models/comment");
+const Likes = require("../models/like");
 const Posts = require("../models/post");
 const commnetMailer = require("../mailers/comments_mailer"); //to use mailer
 const queue = require("../config/kue");
@@ -25,7 +26,7 @@ module.exports.create = async function (req, res) {
       //commnet=await comment.populate("user","name email").execPopulate();
 
       // commnetMailer.newComment(CommentWithUser); // to send mail on each comment created
-      
+
       // create a new queue with name emails if alraedy present then add the job inside that
       let job = queue.create("emails", CommentWithUser).save(function (err) {
         if (err) {
@@ -74,7 +75,7 @@ module.exports.destroy = async function (req, res) {
       if (comment.user == req.user.id || post.user == req.user.id) {
         let postId = comment.post;
         comment.remove();
-
+        await Likes.deleteMany({ Likeable: req.params.id });
         await Posts.findByIdAndUpdate(
           //find postby id and update the comments inside
           postId,
