@@ -2,15 +2,25 @@
   display: flex;
   position: relative; }
   #home-container #feeds-posts {
-    width: 70%;
+    width: 60%;
     padding: 5px; }
-  #home-container #devider {
+  #home-container #devider-2 {
     position: absolute;
     width: 0%;
     bottom: 5%;
     height: 90%;
     border: 3px dashed darkgray;
-    left: 70%; }
+    left: 60%; }
+  #home-container #devider-1 {
+    position: absolute;
+    width: 0%;
+    bottom: 5%;
+    height: 90%;
+    border: 3px dashed darkgray;
+    left: 80%; }
   #home-container #user-friends {
-    width: 28%;
-    padding: 5px; }
+    width: 18%;
+    margin-left: 2%; }
+  #home-container #user-all {
+    width: 18%;
+    margin-left: 2%; }

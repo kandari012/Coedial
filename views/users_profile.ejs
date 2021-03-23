@@ -31,4 +31,14 @@
 <%}else {%>
 <p><%= profile_user.name%></p>
 <p><%= profile_user.email%></p>
-<%}%>
+<!-- if friend and shoe remove friend else shoe add friend -->
+<%if(locals.friend){%>
+<a class="friend" href="/friendship/toggle/?id=<%=profile_user.id%>">
+  Remove Friend
+</a>
+<%}else{%>
+<a class="friend" href="/friendship/toggle/?id=<%=profile_user.id%>">
+  Add Friend
+</a>
+<%}%> <%}%>
+<script src="/js/friend.js"></script>

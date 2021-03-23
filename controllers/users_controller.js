@@ -1,13 +1,25 @@
 const User = require("../models/user");
 const path = require("path");
 const fs = require("fs");
+const Friendship = require("../models/friendship");
 
-module.exports.profile = function (req, res) {
-  User.findById(req.params.id, function (err, user) {
-    return res.render("users_profile", {
-      title: "Profile",
-      profile_user: user,
-    });
+module.exports.profile = async function (req, res) {
+  let friend = false;
+  let user = await User.findById(req.params.id);
+  //check is friendship exist between logenin user and current user whose profile page is open
+  let friendship = await Friendship.find({
+    $or: [
+      { from_user: req.user.id, to_user: req.params.id },
+      { to_user: req.user.id, from_user: req.params.id },
+    ],
+  });
+  if (friendship) {
+    friend = true;
+  }
+  return res.render("users_profile", {
+    title: "Profile",
+    profile_user: user,
+    friend: friend,
   });
 };
 

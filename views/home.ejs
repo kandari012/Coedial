@@ -19,9 +19,29 @@
       </ul>
     </div>
   </section>
-  <div id="devider"></div>
+  <!-- if user login then only show friends -->
+  <% if(locals.user){%>
+  <div id="devider-1"></div>
   <section id="user-friends">
     <h4>Friends</h4>
+    <!-- show friend details -->
+    <% for(let friend of friendship){%> <%if(friend.from_user.id
+    !=locals.user.id){%>
+    <a href="/users/profile/<%=friend.from_user._id%>"
+      ><%=friend.from_user.name%></a
+    >
+    <%}else{%>
+    <a href="/users/profile/<%=friend.to_user._id%>"
+      ><%=friend.to_user.name%></a
+    >
+    <%}%>
+    <br />
+    <%}%>
+  </section>
+  <%}%>
+  <div id="devider-2"></div>
+  <section id="user-all">
+    <h4>All Users</h4>
     <% for(let user of all_users){%>
     <a href="/users/profile/<%=user.id%>"><%=user.name%></a>
     <br />

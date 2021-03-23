@@ -3,19 +3,31 @@
   position: relative;
 
   #feeds-posts {
-    width: 70%;
+    width: 60%;
     padding: 5px;
   }
-  #devider {
+  #devider-2 {
     position: absolute;
     width: 0%;
     bottom: 5%;
     height: 90%;
     border: 3px dashed darkgray;
-    left: 70%;
+    left: 60%;
+  }
+  #devider-1 {
+    position: absolute;
+    width: 0%;
+    bottom: 5%;
+    height: 90%;
+    border: 3px dashed darkgray;
+    left: 80%;
   }
   #user-friends {
-    width: 28%;
-    padding: 5px;
+    width: 18%;
+    margin-left: 2%;
+  }
+  #user-all {
+    width: 18%;
+    margin-left: 2%;
   }
 }

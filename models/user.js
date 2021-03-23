@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    friendships: [
+      {
+        type: mongoose.Schema.Types.ObjectId, //will refer to user schema will take id of user from user schema
+        ref: "Friendship", //schema of User
+      },
+    ],
   },
   {
     timestamps: true,
