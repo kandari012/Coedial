@@ -17,7 +17,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("./config/passport-local-strategy");
 const passportJWT = require("./config/passport-jwt-strategy");
-const passportGoogle=require("./config/passport-google-oauth2-strategy");
+const passportGoogle = require("./config/passport-google-oauth2-strategy");
 // will store express session in mongo store require express session which we created
 const MongoStore = require("connect-mongo").default;
 //to read form posted data
@@ -27,6 +27,13 @@ const sassMiddleware = require("node-sass-middleware");
 const flash = require("connect-flash");
 //use middleware to add flash message from req to response
 const customMware = require("./config/middleware");
+
+//setup the chat server to be used with socket.io
+const chatServer = require("http").Server(app); //inport http for the server with app
+const chatSockets = require("./config/chat_sockets").chatSockets(chatServer); //using cahtsocket from config file
+chatServer.listen(5000);
+console.log("chat server is listening on port 5000");
+
 //make the avatar upload path available to the browser
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
