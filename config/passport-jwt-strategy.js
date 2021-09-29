@@ -1,13 +1,14 @@
 const passport = require("passport");
 const JWTStrategy = require("passport-jwt").Strategy; //importing startegy
 const ExtractJWT = require("passport-jwt").ExtractJwt; //will help extracting the JWT from header
+const env = require("./environment");
 
 const User = require("../models/user");
 
 let opts = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //header list of key,it  has key authorization which is also list of keys ,which has key bearer which has JWT token,used when checking authentication from postman
-  
-  secretOrKey: "codeial", //encryption and decreption string used in controller while creating jwt
+
+  secretOrKey: env.jwt_secret, //encryption and decreption string used in controller while creating jwt
 };
 //once the user jwt is generated it is used after that to authenticate the jwt
 passport.use(

@@ -1,5 +1,6 @@
 const User = require("../../../models/user");
 const jwt = require("jsonwebtoken"); //import json web token to create jwt
+const env = require("../../../config/environment");
 
 module.exports.createSession = async function (req, res) {
   try {
@@ -15,7 +16,7 @@ module.exports.createSession = async function (req, res) {
       message: "sign in successful here is your token keep it safe",
       //codeal key is used to encrypt as it is used to decreyte in startegy jwt
       data: {
-        token: jwt.sign(user.toJSON(), "codeial", { expiresIn: "100000" }),
+        token: jwt.sign(user.toJSON(), env.jwt_secret, { expiresIn: "100000" }),
       },
     });
   } catch (err) {

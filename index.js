@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8000;
+const env = require("./config/environment");
 
 //middleware to define the layout for the application
 const expresslayouts = require("express-ejs-layouts");
@@ -36,11 +37,11 @@ console.log("chat server is listening on port 5000");
 
 //make the avatar upload path available to the browser
 app.use("/uploads", express.static(__dirname + "/uploads"));
-
+const path = require("path");
 app.use(
   sassMiddleware({
-    src: "./assets/scss", //source file of scss
-    dest: "./assets/css", //dest where to put the css files converted
+    src: path.join(__dirname, env.asset_path, "scss"), //source file of scss
+    dest: path.join(__dirname, env.asset_path, "css"), //dest where to put the css files converted
     debug: true, // all the error and commands we see during compilation need to see if compilation fail etc
     outputStyle: "extended", //multiple line style
     prefix: "/css", //where the server should lookout for css files
@@ -58,7 +59,7 @@ app.set("layout extractStyles", true);
 app.set("layout extractScripts", true);
 
 //middleware to define the asset folder
-app.use(express.static("./assets"));
+app.use(express.static(env.asset_path));
 
 // set up the view engine
 app.set("view engine", "ejs");
@@ -70,7 +71,7 @@ app.use(
   session({
     name: "codeial", //name of cookie
     //todo change the secret before deployment in prod mode
-    secret: "blah", //when encryption happens the key to encode and decode
+    secret: env.session_cookie_key, //when encryption happens the key to encode and decode
     saveUninitialized: false, //
     resave: false,
     cookie: {
