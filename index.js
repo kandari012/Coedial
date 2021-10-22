@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8000;
 const env = require("./config/environment");
+const logger = require("morgan");
 
 //middleware to define the layout for the application
 const expresslayouts = require("express-ejs-layouts");
@@ -37,16 +38,24 @@ console.log("chat server is listening on port 5000");
 
 //make the avatar upload path available to the browser
 app.use("/uploads", express.static(__dirname + "/uploads"));
+
+// HTTP request logger middleware for node.js
+app.use(logger(env.morgan.node, env.morgan.options));
+
 const path = require("path");
-app.use(
-  sassMiddleware({
-    src: path.join(__dirname, env.asset_path, "scss"), //source file of scss
-    dest: path.join(__dirname, env.asset_path, "css"), //dest where to put the css files converted
-    debug: true, // all the error and commands we see during compilation need to see if compilation fail etc
-    outputStyle: "extended", //multiple line style
-    prefix: "/css", //where the server should lookout for css files
-  })
-);
+//only run if mode is dev
+if (env.name == "development") {
+  app.use(
+    sassMiddleware({
+      src: path.join(__dirname, env.asset_path, "scss"), //source file of scss
+      dest: path.join(__dirname, env.asset_path, "css"), //dest where to put the css files converted
+      debug: true, // all the error and commands we see during compilation need to see if compilation fail etc
+      outputStyle: "extended", //multiple line style
+      prefix: "/css", //where the server should lookout for css files
+    })
+  );
+}
+
 app.use(express.urlencoded());
 
 //to parse cookie
