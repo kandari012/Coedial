@@ -1,6 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
+
+// to make view helper available to views
+require("./config/view-helpers")(app);
 const port = 8000;
 const env = require("./config/environment");
 const logger = require("morgan");

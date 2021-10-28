@@ -1,19 +1,17 @@
 <html>
   <head>
-     <!-- to use noty  -->
-     <link
-     rel="stylesheet"
-     href=" https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
-   />
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
-   <!-- to use jquery in  -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- to use noty  -->
+    <link
+      rel="stylesheet"
+      href=" https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <!-- to use jquery in  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title><%= title %></title>
-    <link rel="stylesheet" href="/css/layout.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-   
-    <%- style%>
+    <link rel="stylesheet" href="<%=assetsPath("css/layout.css")%>" /> <link
+    rel="stylesheet" href="<%=assetsPath("css/header.css")%>" /> <link
+    rel="stylesheet" href="<%=assetsPath("css/footer.css")%>" /> <%- style%>
   </head>
   <body>
     <%- include("_header") ;%>
