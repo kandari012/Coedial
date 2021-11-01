@@ -59,7 +59,7 @@ if (env.name == "development") {
   );
 }
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
 //to parse cookie
 app.use(cookieParser());
